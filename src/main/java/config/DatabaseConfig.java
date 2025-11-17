@@ -1,12 +1,9 @@
 package config;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.Properties;
 
 import exceptions.DbPropertiesNotFound;
@@ -19,9 +16,7 @@ public class DatabaseConfig {
     private static Properties props = new Properties();
 
     static {
-        try (
-                InputStream input = DatabaseConfig.class
-                        .getResourceAsStream("/db.properties");) {
+        try (InputStream input = DatabaseConfig.class.getResourceAsStream("/db.properties")) {
 
             if (input == null) {
                 throw new DbPropertiesNotFound();
