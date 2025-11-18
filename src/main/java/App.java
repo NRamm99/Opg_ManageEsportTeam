@@ -23,8 +23,9 @@ public class App {
                     | 1. Add Team                   |
                     | 2. Remove Team                |
                     | 3. View Teams                 |
-                    | 4. Edit Team                   |
-                    | 5. Exit                       |
+                    | 4. Edit Team                  |
+                    | 5. View most successful team  |
+                    | 6. Exit                       |
                     ================================
                     """);
             int choice = Tools.validateInt(input, "Enter your choice");
@@ -42,6 +43,9 @@ public class App {
                     promptEditTeam();
                     break;
                 case 5:
+                    promptViewMostSuccessfulTeam();
+                    break;
+                case 6:
                     exitProgram();
                     break;
                 default:
@@ -49,6 +53,14 @@ public class App {
                     break;
             }
         }
+    }
+
+    private static void promptViewMostSuccessfulTeam() {
+        Tools.clearConsole();
+        System.out.println("Viewing most successful team...");
+        Team mostSuccessfulTeam = esportManagerSystem.getMostSuccessfulTeam();
+        printTeam(mostSuccessfulTeam);
+        Tools.waitForUser(input);
     }
 
     private static void promptEditTeam() {
@@ -218,6 +230,5 @@ public class App {
             System.out.println("Failed to add team: " + e.getMessage());
         }
     }
-
 
 }

@@ -45,4 +45,8 @@ public class ESportManagerSystem {
     public boolean teamExists(int id) {
         return teamRepository.teamExists(id);
     }
+
+    public Team getMostSuccessfulTeam() {
+        return teamRepository.getMostSuccessfulTeam();
+    }
 }

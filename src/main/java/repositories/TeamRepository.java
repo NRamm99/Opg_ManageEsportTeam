@@ -135,4 +135,16 @@ public class TeamRepository {
             return "Failed to update team prize pool: " + e.getMessage();
         }
     }
+
+    public Team getMostSuccessfulTeam() {
+        String sql = "SELECT name, game, wins, prize_pool FROM teams ORDER BY wins DESC LIMIT 1";
+        try (Connection conn = DatabaseConfig.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return new Team(rs.getString("name"), rs.getString("game"), rs.getInt("wins"), rs.getDouble("prize_pool"));
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
