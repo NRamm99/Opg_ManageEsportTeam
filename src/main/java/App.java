@@ -23,7 +23,8 @@ public class App {
                     | 1. Add Team                   |
                     | 2. Remove Team                |
                     | 3. View Teams                 |
-                    | 4. Exit                       |
+                    | 4. Edit Team                   |
+                    | 5. Exit                       |
                     ================================
                     """);
             int choice = Tools.validateInt(input, "Enter your choice");
@@ -38,6 +39,9 @@ public class App {
                     promptViewTeams();
                     break;
                 case 4:
+                    promptEditTeam();
+                    break;
+                case 5:
                     exitProgram();
                     break;
                 default:
@@ -47,16 +51,112 @@ public class App {
         }
     }
 
+    private static void promptEditTeam() {
+        Tools.clearConsole();
+        System.out.println("""
+                ================================
+                | 1. Edit Team Name             |
+                | 2. Edit Team Game             |
+                | 3. Edit Team Wins             |
+                | 4. Edit Team Prize Pool       |
+                | 5. Exit                       |
+                ================================
+                """);
+        int choice = Tools.validateInt(input, "Enter your choice");
+        switch (choice) {
+            case 1:
+                promptEditTeamName();
+                break;
+            case 2:
+                promptEditTeamGame();
+                break;
+            case 3:
+                promptEditTeamWins();
+                break;
+            case 4:
+                promptEditTeamPrizePool();
+                break;
+            case 5:
+                return;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+                break;
+        }
+
+    }
+
+    private static void promptEditTeamPrizePool() {
+        Tools.clearConsole();
+        printTeamIdList();
+        int id = Tools.validateInt(input, "Enter team id");
+        if (!esportManagerSystem.teamExists(id)) {
+            System.out.println("Team does not exist.");
+            Tools.waitForUser(input);
+            return;
+        }
+        double prizePool = Tools.validateDouble(input, "Enter new team prize pool");
+        String result = esportManagerSystem.updateTeamPrizePool(id, prizePool);
+        System.out.println(result);
+        Tools.waitForUser(input);
+    }
+
+    private static void promptEditTeamWins() {
+        Tools.clearConsole();
+        printTeamIdList();
+        int id = Tools.validateInt(input, "Enter team id");
+        if (!esportManagerSystem.teamExists(id)) {
+            System.out.println("Team does not exist.");
+            Tools.waitForUser(input);
+            return;
+        }
+        int wins = Tools.validateInt(input, "Enter new team wins");
+        String result = esportManagerSystem.updateTeamWins(id, wins);
+        System.out.println(result);
+        Tools.waitForUser(input);
+    }
+
+    private static void promptEditTeamGame() {
+        Tools.clearConsole();
+        printTeamIdList();
+        int id = Tools.validateInt(input, "Enter team id");
+        if (!esportManagerSystem.teamExists(id)) {
+            System.out.println("Team does not exist.");
+            Tools.waitForUser(input);
+            return;
+        }
+        String game = Tools.validateString(input, "Enter new team game");
+        String result = esportManagerSystem.updateTeamGame(id, game);
+        System.out.println(result);
+        Tools.waitForUser(input);
+    }
+
+    private static void promptEditTeamName() {
+        Tools.clearConsole();
+        printTeamIdList();
+        int id = Tools.validateInt(input, "Enter team id");
+        if (!esportManagerSystem.teamExists(id)) {
+            System.out.println("Team does not exist.");
+            Tools.waitForUser(input);
+            return;
+        }
+        String name = Tools.validateString(input, "Enter new team name");
+        String result = esportManagerSystem.updateTeamName(id, name);
+        System.out.println(result);
+        Tools.waitForUser(input);
+    }
+
     private static void promptRemoveTeam() {
         Tools.clearConsole();
         printTeamIdList();
         int id = Tools.validateInt(input, "Enter team id");
-        try {
-            esportManagerSystem.removeTeam(id);
+        if (!esportManagerSystem.teamExists(id)) {
+            System.out.println("Team does not exist.");
+            Tools.waitForUser(input);
+            return;
         }
-        catch (SQLException e) {
-            System.out.println("Failed to remove team: " + e.getMessage());
-        }
+        String result = esportManagerSystem.removeTeam(id);
+        System.out.println(result);
+        Tools.waitForUser(input);
     }
 
     private static void printTeamIdList() {
@@ -118,5 +218,6 @@ public class App {
             System.out.println("Failed to add team: " + e.getMessage());
         }
     }
+
 
 }
